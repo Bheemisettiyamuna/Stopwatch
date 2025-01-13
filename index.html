@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch using HTML, CSS, Javascrip</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stopwatch">
+      <h2>Stopwatch</h2>
+      <h1 id="displayTime">00:00:000</h1>
+
+      <div class="buttons">
+        <img id="stopBtn" src="stop.png" />
+        <img id="startBtn" src="start.png" />
+        <img id="resetBtn" src="reset.png" />
+      </div>
+    </div>
+
+    <script defer>
+      let [milliseconds, seconds, minutes] = [0, 0, 0];
+      let timer;
+
+      function run() {
+        milliseconds++;
+        if (milliseconds == 1000) {
+          milliseconds = 0;
+          seconds++;
+          if (seconds == 60) {
+            seconds = 0;
+            minutes++;
+          }
+        }
+
+        displayTime();
+      }
+
+      function startStopwatch() {
+        if (!timer) {
+          timer = setInterval(run, 1);
+        }
+        console.log("start button clicked");
+      }
+
+      function stopStopwatch() {
+        clearInterval(timer);
+        timer = null;
+        console.log("stop button clicked");
+      }
+
+      function resetStopwatch() {
+        clearInterval(timer);
+        timer = null;
+        [milliseconds, seconds, minutes] = [0, 0, 0];
+        displayTime();
+        console.log("reset button clicked");
+      }
+
+      function displayTime() {
+        let milli =
+          milliseconds < 10
+            ? `00${milliseconds}`
+            : milliseconds < 100
+            ? `0${milliseconds}`
+            : milliseconds;
+        let sec = seconds < 10 ? `0${seconds}` : seconds;
+        let min = minutes < 10 ? `0${minutes}` : minutes;
+        document.getElementById(
+          "displayTime"
+        ).innerHTML = `${min}:${sec}:${milli}`;
+      }
+      document
+        .getElementById("startBtn")
+        .addEventListener("click", startStopwatch);
+      document
+        .getElementById("stopBtn")
+        .addEventListener("click", stopStopwatch);
+      document
+        .getElementById("resetBtn")
+        .addEventListener("click", resetStopwatch);
+    </script>
+  </body>
+</html>
